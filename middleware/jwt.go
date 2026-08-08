@@ -48,7 +48,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			// Return the secret key used for signing the token
 			return schemas.JwtKey, nil
 
-			},_)
+		})
 
 			// Check if there was an error parsing the token or if the token is invalid
 		if err != nil {
