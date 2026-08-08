@@ -7,18 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-var jwtKey = []byte(os.Getenv("JWT"))
+var JwtKey = []byte(os.Getenv("JWT"))
 
 type User struct {
   gorm.Model
 
   Username string
+  UserID   string
   Password string
   Email    string
 }
 
 type UserResponse struct {
   ID       uint   `json:"id"`
+  UserID   string `json:"user_id"`
   Username string `json:"username"`
   Email    string `json:"email"`
 }
