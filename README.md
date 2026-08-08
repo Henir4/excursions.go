@@ -13,7 +13,7 @@ REST API that manages tours and the administration of an excursion website
 #### Get excursion
 
 ```http
-  GET /api/v1/excursion?id={id}
+  GET /api/v1/excursion/id={id}
 ```
 
 | Parameter | Type     | Description                       |
@@ -23,7 +23,7 @@ REST API that manages tours and the administration of an excursion website
 #### Update excursion
 
 ```http
-  GET /api/v1/excursion?id={id}
+  GET /api/v1/excursion/id={id}
 ```
 
 | Parameter | Type     | Description                       |
@@ -38,7 +38,7 @@ REST API that manages tours and the administration of an excursion website
 #### Delete excursion
 
 ```http
-  GET /api/v1/excursion?id={id}
+  GET /api/v1/excursion/id={id}
 ```
 
 | Parameter | Type     | Description                       |
