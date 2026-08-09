@@ -26,7 +26,7 @@ func AdminMiddleware() gin.HandlerFunc {
 		}
 
 		// Check if the user has admin privileges
-		if !user.IsAdmin {
+		if user.Role != "admin" {
 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "admin privileges required"})
 			return
 		}

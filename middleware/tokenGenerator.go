@@ -15,7 +15,7 @@ func GenerateToken(user *schemas.User) (string, error) {
 	claims := &schemas.Claims{
 		Username: user.Username,
 		UserID:   user.UserID,
-		IsAdmin:  user.IsAdmin,
+		Role:  user.Role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(expirationTime),

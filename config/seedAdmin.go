@@ -25,7 +25,7 @@ func SeedAdmin(db *gorm.DB) {
 			Email:    os.Getenv("EMAIL"),
 			Password: os.Getenv("PASSWORD"),
 			UserID:   adminID,
-			IsAdmin:  true,
+			Role:  "admin",
 		}
 
 		// Save the admin user to the database

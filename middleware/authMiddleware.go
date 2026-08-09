@@ -61,7 +61,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			user := schemas.User{
 				UserID:   claims.UserID,
 				Username: claims.Username,
-				IsAdmin:  claims.IsAdmin,
+				Role:  claims.Role,
 			}
 
 			// Set the user information in the context for use in subsequent handlers

@@ -53,7 +53,7 @@ func RegisterHandler(ctx *gin.Context) {
 		Email:    registerRequest.Email,
 		Password: registerRequest.Password,
 		UserID:   userID,
-		IsAdmin:  false,
+		Role:  "user",
 	}
 
 	// Save the new user to the database
