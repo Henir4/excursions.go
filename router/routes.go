@@ -24,8 +24,10 @@ func initializeroutes(router *gin.Engine) {
 		admin.POST("/excursion", handler.CreateExcursionHandler)
 		admin.DELETE("/excursion", handler.DeleteExcursionHandler)
 		admin.PUT("/excursion", handler.UpdateExcursionHandler)
+		admin.GET("/dashboard", handler.AdminDashboardHandler)
 	}
 
+	// Authentication routes
 	auth := router.Group("/api/v1/auth")
 	{
 		auth.POST("/register", handler.RegisterHandler)
