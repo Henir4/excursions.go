@@ -11,6 +11,7 @@ import (
 
 var JwtKey = []byte(os.Getenv("JWT"))
 
+// User represents a user in the system with fields for username, user ID, password, email, and admin status.
 type User struct {
 	gorm.Model
 
@@ -46,6 +47,7 @@ func (u *User) BeforeSave(tx *gorm.DB) (err error) {
 	return nil
 }
 
+// Claims represents the JWT claims for a user, including username, user ID, admin status, and standard registered claims.
 type UserResponse struct {
 	ID       uint   `json:"id"`
 	UserID   string `json:"user_id"`
@@ -53,17 +55,20 @@ type UserResponse struct {
 	Email    string `json:"email"`
 }
 
+// RegisterRequest represents the request payload for user registration, including username, email, and password.
 type RegisterRequest struct {
 	Username string `json:"username" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
 
+// LoginRequest represents the request payload for user login, including username and password.
 type LoginRequest struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
+// Claims represents the JWT claims for a user, including username, user ID, admin status, and standard registered claims.
 type Claims struct {
 	Username string `json:"username"`
 	UserID   string `json:"user_id"`

@@ -14,10 +14,12 @@ type Logger struct {
   writer io.Writer
 }
 
+// NewLogger creates a new Logger instance with the specified prefix for log messages.
 func NewLogger(prefix string) *Logger {
   writer := io.Writer(os.Stdout)
   logger := log.New(writer, prefix, log.Ldate|log.Ltime)
 
+  // Create separate loggers for different log levels (debug, info, warning, error) with appropriate prefixes.
   return &Logger{
     debug: log.New(writer, "> DEBUG: ", logger.Flags()),
     info: log.New(writer, "> INFO: ", logger.Flags()),

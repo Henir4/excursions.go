@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Excursion represents an excursion with fields for image, title, description, buy link, and find more link.
 type Excursion struct {
   gorm.Model
 
@@ -16,6 +17,7 @@ type Excursion struct {
   FindMore string
 }
 
+// ExcursionResponse represents the response structure for an excursion, including its ID, timestamps, and relevant fields.
 type ExcursionResponse struct {
   
   ID uint `json:"id"`
