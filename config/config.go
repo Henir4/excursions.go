@@ -22,6 +22,9 @@ func Init() error {
 		return fmt.Errorf("error initializing sqlite: %w", err)
 	}
 
+	// Run the seed function to create an admin user if it doesn't exist
+	SeedAdmin(db)
+
 	return nil
 }
 
