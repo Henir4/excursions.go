@@ -25,6 +25,7 @@ func initializeroutes(router *gin.Engine) {
 		admin.DELETE("/excursion", handler.DeleteExcursionHandler)
 		admin.PUT("/excursion", handler.UpdateExcursionHandler)
 		admin.GET("/dashboard", handler.AdminDashboardHandler)
+		admin.GET("/users", handler.ShowUsersHandler)
 	}
 
 	// Authentication routes
