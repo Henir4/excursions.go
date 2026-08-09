@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"excursion.com/schemas"
 	"gorm.io/gorm"
 )
@@ -9,12 +11,20 @@ import (
 func SeedAdmin(db *gorm.DB) {
 	var count int64
 
+	adminID, err := PrefixID("adm")
+	if err != nil {
+		logger.Errorf("Failed to generate admin ID: %v", err)
+		return
+	}
+
 	db.Model(schemas.User{}).Where("isAdmin = ?", true).Count(&count)
 	if count == 0 {
 		// Create default admin user
 		admin := schemas.User{
-			Email:    "admin@example.com",
-			Password: "admin123",
+			Username: os.Getenv("USERNAME"),
+			Email:    os.Getenv("EMAIL"),
+			Password: os.Getenv("PASSWORD"),
+			UserID:   adminID,
 			IsAdmin:  true,
 		}
 		
