@@ -60,3 +60,9 @@ type UpdateExcursionResponse struct {
 	Message string `json:"message"`
 	Data schemas.ExcursionResponse `json:"data"`
 }
+
+// ShowUsersResponse represents the response structure for showing multiple users.
+type ShowUsersResponse struct {
+	Message string `json:"message"`
+	Data []schemas.UserResponse `json:"data"`
+}
