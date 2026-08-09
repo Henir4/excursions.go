@@ -38,7 +38,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// Parse the JWT token
 		token, err := jwt.ParseWithClaims(tokenString, &schemas.Claims{}, func(token *jwt.Token) (interface{}, error) {
-			
+
 			// Ensure the signing method is HMAC
 			// This is a security measure to prevent certain types of attacks
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -50,7 +50,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		})
 
-			// Check if there was an error parsing the token or if the token is invalid
+		// Check if there was an error parsing the token or if the token is invalid
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			return
@@ -60,8 +60,9 @@ func AuthMiddleware() gin.HandlerFunc {
 		if claims, ok := token.Claims.(*schemas.Claims); ok && token.Valid {
 
 			user := schemas.User{
-				UserID: claims.UserID,
+				UserID:   claims.UserID,
 				Username: claims.Username,
+				IsAdmin:  claims.IsAdmin,
 			}
 
 			// Set the user information in the context for use in subsequent handlers
@@ -74,7 +75,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		// If everything is valid, proceed to the next handler
 		c.Next()
 
-		
 	}
 }
 
@@ -86,6 +86,7 @@ func GenerateToken(user *schemas.User) (string, error) {
 	claims := &schemas.Claims{
 		Username: user.Username,
 		UserID:   user.UserID,
+		IsAdmin:  user.IsAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
@@ -102,4 +103,28 @@ func GenerateToken(user *schemas.User) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+// AdminMiddleware ensures the authenticated user has admin privileges.
+func AdminMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userVal, exists := c.Get("user")
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user not found"})
+			return
+		}
+
+		user, ok := userVal.(schemas.User)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid user in context"})
+			return
+		}
+
+		if !user.IsAdmin {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "admin privileges required"})
+			return
+		}
+
+		c.Next()
+	}
 }

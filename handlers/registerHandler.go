@@ -46,13 +46,14 @@ func RegisterHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate user ID"})
 		return
 	}
- 
+
 	// Create a new user instance with the provided details and the generated user ID
 	user := schemas.User{
 		Username: registerRequest.Username,
 		Email:    registerRequest.Email,
 		Password: registerRequest.Password,
 		UserID:   userID,
+		IsAdmin:  false,
 	}
 
 	// Save the new user to the database

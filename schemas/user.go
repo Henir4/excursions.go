@@ -18,6 +18,7 @@ type User struct {
 	UserID   string
 	Password string
 	Email    string
+	IsAdmin  bool
 }
 
 func (u *User) BeforeSave(tx *gorm.DB) (err error) {
@@ -66,5 +67,6 @@ type LoginRequest struct {
 type Claims struct {
 	Username string `json:"username"`
 	UserID   string `json:"user_id"`
+	IsAdmin  bool   `json:"is_admin"`
 	jwt.RegisteredClaims
 }

@@ -13,9 +13,17 @@ func initializeroutes(router *gin.Engine) {
 	{
 		v1.GET("/excursion", handler.ShowExcursionHandler)
 		v1.GET("/excursions", handler.ShowExcursionsHandler)
-		v1.POST("/excursion", handler.CreateExcursionHandler)
-		v1.DELETE("/excursion", handler.DeleteExcursionHandler)
-		v1.PUT("/excursion", handler.UpdateExcursionHandler)
+		// Public read routes
+
+	}
+
+	// Admin-only routes (create/update/delete excursions)
+	admin := router.Group("/api/v1")
+	admin.Use(middleware.AuthMiddleware(), middleware.AdminMiddleware())
+	{
+		admin.POST("/excursion", handler.CreateExcursionHandler)
+		admin.DELETE("/excursion", handler.DeleteExcursionHandler)
+		admin.PUT("/excursion", handler.UpdateExcursionHandler)
 	}
 
 	auth := router.Group("/api/v1/auth")
