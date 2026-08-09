@@ -32,8 +32,5 @@ func DeleteExcursionHandler(ctx *gin.Context) {
 
 
   // Return a success response with the deleted excursion details.
-  ctx.JSON(http.StatusOK, gin.H {
-    "msg": "excursion deleted successfully",
-    "data": excursion,
-  })
+  sendSuccess(ctx, "excursion-deleted", excursion)
 }

@@ -18,7 +18,5 @@ func ShowUsersHandler(ctx *gin.Context) {
 	}
 
 	// Return the list of users in the response
-	ctx.JSON(http.StatusOK, gin.H{
-		"data": users,
-	})
+	sendSuccess(ctx, "users-listed", users)
 }

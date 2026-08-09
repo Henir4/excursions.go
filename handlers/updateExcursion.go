@@ -60,7 +60,5 @@ func UpdateExcursionHandler(ctx *gin.Context) {
   }
 
   // Return a success response with the updated excursion details.
-  ctx.JSON(http.StatusOK, gin.H {
-    "updated data": excursion,
-  })
+  sendSuccess(ctx, "excursion-updated", excursion)
 }

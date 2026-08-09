@@ -19,7 +19,5 @@ func ShowExcursionHandler(ctx *gin.Context) {
   }
 
   // Return the excursion details in the response
-  ctx.JSON(http.StatusOK, gin.H {
-    "data": excursion,
-  })
+  sendSuccess(ctx, "excursion-retrieved", excursion)
 }

@@ -18,7 +18,5 @@ func ShowExcursionsHandler(ctx *gin.Context) {
   }
 
   // Return the list of excursions in the response
-  ctx.JSON(http.StatusOK, gin.H {
-    "data": excursions,
-  })
+  sendSuccess(ctx, "excursions-listed", excursions)
 }

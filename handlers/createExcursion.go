@@ -40,8 +40,5 @@ func CreateExcursionHandler(ctx *gin.Context) {
 
 	logger.Infof("request received: %+v", req)
 	// If everything is valid, proceed
-	ctx.JSON(http.StatusOK, gin.H{
-		"data": &req,
-		"msg":  "Excursion created successfully",
-	})
+	sendSuccess(ctx, "excursion-created", excursion)
 }
