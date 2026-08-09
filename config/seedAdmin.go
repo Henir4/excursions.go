@@ -17,7 +17,7 @@ func SeedAdmin(db *gorm.DB) {
 		return
 	}
 
-	db.Model(schemas.User{}).Where("isAdmin = ?", true).Count(&count)
+	db.Model(schemas.User{}).Where("is_admin = ?", true).Count(&count)
 	if count == 0 {
 		// Create default admin user
 		admin := schemas.User{
@@ -27,11 +27,15 @@ func SeedAdmin(db *gorm.DB) {
 			UserID:   adminID,
 			IsAdmin:  true,
 		}
-		
+
 		// Save the admin user to the database
 		if err := db.Create(&admin).Error; err != nil {
 			logger.Errorf("Failed to seed admin user: %v", err)
 			return
 		}
+
+		logger.Info("Default admin user created successfully.")
+	} else {
+		logger.Info("Admin user already exists. Skipping seeding.")
 	}
 }
