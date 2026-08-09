@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"time"
 
 	"excursion.com/schemas"
 	"github.com/gin-gonic/gin"
@@ -75,56 +74,5 @@ func AuthMiddleware() gin.HandlerFunc {
 		// If everything is valid, proceed to the next handler
 		c.Next()
 
-	}
-}
-
-func GenerateToken(user *schemas.User) (string, error) {
-	// Set the expiration time for the token (e.g., 24 hours from now)
-	expirationTime := time.Now().Add(24 * time.Hour)
-
-	// Create the JWT claims, which includes the user information and expiration time
-	claims := &schemas.Claims{
-		Username: user.Username,
-		UserID:   user.UserID,
-		IsAdmin:  user.IsAdmin,
-		RegisteredClaims: jwt.RegisteredClaims{
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
-			Subject:   user.UserID,
-			Issuer:    "RotaUnicaViagens",
-		},
-	}
-
-	// Create the token using the claims and sign it with the secret key
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(schemas.JwtKey)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
-}
-
-// AdminMiddleware ensures the authenticated user has admin privileges.
-func AdminMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userVal, exists := c.Get("user")
-		if !exists {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user not found"})
-			return
-		}
-
-		user, ok := userVal.(schemas.User)
-		if !ok {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid user in context"})
-			return
-		}
-
-		if !user.IsAdmin {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "admin privileges required"})
-			return
-		}
-
-		c.Next()
 	}
 }
