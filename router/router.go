@@ -11,5 +11,6 @@ func Initialize() {
   // Initialize Routes
   initializeroutes(router)
 
+  // Start the server on port 8080
   router.Run(":8080")
 }

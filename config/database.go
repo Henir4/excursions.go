@@ -39,6 +39,7 @@ func IntializeSQLite() (*gorm.DB, error) {
     return nil, err
   }
 
+  // Migrate the database schema for Excursion and User models
   err = db.AutoMigrate(&schemas.Excursion{}, &schemas.User{})
   if err != nil {
     // Migration Error Log

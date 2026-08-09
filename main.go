@@ -10,8 +10,10 @@ var (
 )
 
 func main() {
+  // Initialize Logger
   logger = config.GetLogger("main")
 
+  // Initialize Database
   err := config.Init()
 
   // Error Treatment

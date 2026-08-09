@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ShowExcursionsHandler
 func ShowExcursionsHandler(ctx *gin.Context) {
   excursions := []schemas.Excursion{}
 
