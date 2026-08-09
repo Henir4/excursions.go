@@ -10,57 +10,58 @@ import (
 )
 
 // LoginHandler handles user login requests
-func LoginHandler(c *gin.Context) {
+func LoginHandler(ctx *gin.Context) {
 
 	var loginRequest schemas.LoginRequest
 
 	// Bind the JSON request body to the loginRequest struct
-	if err := c.ShouldBindJSON(&loginRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+	if err := ctx.ShouldBindJSON(&loginRequest); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
 	// Check if the username and password are provided
 	if loginRequest.Username == "" || loginRequest.Password == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username and password are required"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Username and password are required"})
 		return
 	}
 
 	// Find the user in the database by username
 	var user schemas.User
 	if err := db.Where("username = ?", loginRequest.Username).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
 
 	// Compare the provided password with the stored hashed password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginRequest.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
 
 	// Generate a JWT token for the authenticated user
 	tokenString, err := middleware.GenerateToken(&user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
 
 	// Return the token in the response
-	c.JSON(http.StatusOK, gin.H{"token": tokenString})
+	ctx.JSON(http.StatusOK, gin.H{"token": tokenString})
 
 }
 
 // ProtectedHandler is an example of a protected route that requires authentication
-func ProtectedHandler(c *gin.Context) {
+func ProtectedHandler(ctx *gin.Context) {
 
 	// Retrieve the user from the context set by the AuthMiddleware
-	user, exists := c.Get("user")
+	user, exists := ctx.Get("user")
 	if !exists {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "User not found in context"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "User not found in context"})
 		return
 	}
 
-	// Return a success message along with the user information
-	c.JSON(http.StatusOK, gin.H{"message": "Access granted", "user": user})
+	// Return a success response with the authenticated user's details
+	sendSuccess(ctx, "protected-access", user)
 }
+
