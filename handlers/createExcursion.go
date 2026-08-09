@@ -14,18 +14,21 @@ func CreateExcursionHandler(ctx *gin.Context) {
 
 	// Attempt to bind the JSON payload to the struct
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "malformed JSON: " + err.Error()})
+		logger.Errorf("error binding JSON: %v", err.Error())
 		return
 	}
 
 	// Validate the decoded struct
 	if err := req.Validate(); err != nil {
+		logger.Errorf("validation error: %v", err.Error())
 		sendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
+	// Generate a unique excursion ID with the prefix "exc"
 	excursionID, err := config.PrefixID("exc")
 	if err != nil {
+		logger.Errorf("error generating excursion ID: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error generating excursion ID")
 		return
 	}
@@ -48,7 +51,6 @@ func CreateExcursionHandler(ctx *gin.Context) {
 		return
 	}
 
-	logger.Infof("request received: %+v", req)
 	// If everything is valid, proceed
 	sendSuccess(ctx, "excursion-created", excursion)
 }
