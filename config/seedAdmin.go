@@ -17,15 +17,15 @@ func SeedAdmin(db *gorm.DB) {
 		return
 	}
 
-	db.Model(schemas.User{}).Where("is_admin = ?", true).Count(&count)
+	db.Model(schemas.User{}).Where("role = ?", "admin").Count(&count)
 	if count == 0 {
 		// Create default admin user
 		admin := schemas.User{
 			Username: os.Getenv("USERNAME"),
-			Email:    os.Getenv("EMAIL"),
-			Password: os.Getenv("PASSWORD"),
 			UserID:   adminID,
-			Role:  "admin",
+			Password: os.Getenv("PASSWORD"),
+			Email:    os.Getenv("EMAIL"),
+			Role:     "admin",
 		}
 
 		// Save the admin user to the database
