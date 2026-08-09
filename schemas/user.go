@@ -16,7 +16,7 @@ type User struct {
 	gorm.Model
 
 	Username string
-	UserID   string
+	UserID   string `gorm:"uniqueIndex"`
 	Password string
 	Email    string
 	IsAdmin  bool

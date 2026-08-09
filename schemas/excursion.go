@@ -10,6 +10,7 @@ import (
 type Excursion struct {
   gorm.Model
 
+  ExcursionID string `gorm:"uniqueIndex"`
   Image string
   Title string
   Description string
@@ -19,7 +20,7 @@ type Excursion struct {
 
 // ExcursionResponse represents the response structure for an excursion, including its ID, timestamps, and relevant fields.
 type ExcursionResponse struct {
-  
+  ExcursionID string `json:"excursionId"`
   CreatedAt time.Time `json:"createdAt"`
   UpdatedAt time.Time `json:"updatedAt"`
   DeletedAt time.Time `json:"deletedAt,omitempty"`
