@@ -20,7 +20,6 @@ type Excursion struct {
 // ExcursionResponse represents the response structure for an excursion, including its ID, timestamps, and relevant fields.
 type ExcursionResponse struct {
   
-  ID uint `json:"id"`
   CreatedAt time.Time `json:"createdAt"`
   UpdatedAt time.Time `json:"updatedAt"`
   DeletedAt time.Time `json:"deletedAt,omitempty"`

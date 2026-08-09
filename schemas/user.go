@@ -49,10 +49,8 @@ func (u *User) BeforeSave(tx *gorm.DB) (err error) {
 
 // Claims represents the JWT claims for a user, including username, user ID, admin status, and standard registered claims.
 type UserResponse struct {
-	ID       uint   `json:"id"`
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
 }
 
 // RegisterRequest represents the request payload for user registration, including username, email, and password.
