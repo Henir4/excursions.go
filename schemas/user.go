@@ -2,14 +2,13 @@ package schemas
 
 import (
 	"bytes"
-	"os"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-var JwtKey = []byte(os.Getenv("JWT"))
+var JwtKey []byte
 
 // User represents a user in the system with fields for username, user ID, password, email, and admin status.
 type User struct {
@@ -19,7 +18,7 @@ type User struct {
 	UserID   string `gorm:"uniqueIndex"`
 	Password string
 	Email    string
-	Role  string
+	Role     string
 }
 
 func (u *User) BeforeSave(tx *gorm.DB) (err error) {
@@ -70,6 +69,6 @@ type LoginRequest struct {
 type Claims struct {
 	Username string `json:"username"`
 	UserID   string `json:"user_id"`
-	Role  string `json:"role"`
+	Role     string `json:"role"`
 	jwt.RegisteredClaims
 }
