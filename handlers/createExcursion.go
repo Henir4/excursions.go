@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"excursion.com/config"
 	"excursion.com/schemas"
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +24,15 @@ func CreateExcursionHandler(ctx *gin.Context) {
 		return
 	}
 
+	excursionID, err := config.PrefixID("exc")
+	if err != nil {
+		sendError(ctx, http.StatusInternalServerError, "error generating excursion ID")
+		return
+	}
+
+
 	excursion := schemas.Excursion{
+		ExcursionID: excursionID,
 		Image:       req.Image,
 		Title:       req.Title,
 		Description: req.Description,
@@ -31,6 +40,7 @@ func CreateExcursionHandler(ctx *gin.Context) {
 		FindMore:    req.FindMore,
 	}
 
+	
 	// Insert data in the database
 	if err := db.Create(&excursion).Error; err != nil {
 		logger.Errorf("error creating excursion: %v", err.Error())
